@@ -9,7 +9,6 @@
     android:background="@color/myBgColor"
     tools:context=".ProfileSectionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="175dp"

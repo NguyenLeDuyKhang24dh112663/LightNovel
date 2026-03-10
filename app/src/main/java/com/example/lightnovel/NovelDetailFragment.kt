@@ -8,16 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [NovelDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
