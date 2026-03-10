@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myBgColor"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="194dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/montaga"
+                android:text="LightNovel"
+                android:textAlignment="center"
+                android:textColor="@color/BgThemeColor"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="#1e1e1e"
+                android:text="🔔" />
+
+            <ImageButton
+                android:id="@+id/imgBtnNotif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button_background"
+                android:padding="12dp"
+                android:src="@drawable/ic_action_name"
+                android:textColor="#DCAB1F" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button_background"
+                android:padding="12dp"
+                android:src="@drawable/searching_icon"
+                android:textColor="#DCAB1F"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/flSectionsLayout"
+            android:layout_width="match_parent"
+
+            android:layout_height="750dp">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnHome"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#1e1e1e"
+
+                android:src="@drawable/home_page"
+                android:textColor="#DCAB1F" />
+
+            <ImageButton
+                android:id="@+id/btnFav"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#1e1e1e"
+
+                android:src="@drawable/likesection"
+                android:textColor="#DCAB1F" />
+
+            <ImageButton
+                android:id="@+id/btnProfile"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#1e1e1e"
+
+                android:src="@drawable/profile_person_icon"
+                android:textColor="#DCAB1F" />
+
+            <ImageButton
+                android:id="@+id/button3"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#1e1e1e"
+
+                android:src="@drawable/home_page"
+                android:textColor="#DCAB1F" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Optional: set a background color for the inside of the shape -->
+    <solid android:color="@color/myBgColor"/>
+    <!-- Define the outline color and width -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/GreyButton" /> <!-- Use your desired color -->
+    <!-- Optional: add rounded corners -->
+    <corners android:radius="8dp"/>
+</shape>
