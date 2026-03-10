@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LightNovel">
         <activity
-            android:name=".NovelDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
