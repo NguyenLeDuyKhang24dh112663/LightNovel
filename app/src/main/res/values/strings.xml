@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">LightNovel</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Xin chào</string>
+    <string name="title_label">Tiêu đề</string>
+    <string name="author_label">Tác giả</string>
+    <string name="image_label">Hình ảnh</string>
+    <string name="save_button">Lưu</string>
+    <string name="hint_title">Tên tiểu thuyết</string>
+    <string name="hint_author">Tên tác giả</string>
+    <string name="hint_img">Hình (link/file)</string>
 </resources>

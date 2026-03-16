@@ -1,7 +1,9 @@
 package com.example.lightnovel
 
-class Truyen (
+data class Truyen (
+    val id: Int,
     val title: String,
     val author: String,
-    val image : Int
+    val imageRes: Int,
+    val isFavorite: Boolean = false
 )

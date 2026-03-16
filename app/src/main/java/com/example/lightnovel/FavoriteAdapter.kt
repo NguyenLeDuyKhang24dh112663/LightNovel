@@ -1,18 +1,19 @@
 package com.example.lightnovel
 
 import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class FavoriteAdapter (
     private val context: Context,
-    private val favs: List<Favorites>
+    private val favs: List<Truyen>
 ): RecyclerView.Adapter<FavoriteAdapter.FavoritesVH>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,19 +27,29 @@ class FavoriteAdapter (
         holder: FavoritesVH,
         position: Int
     ) {
-        val fav = favs[position]
-        holder.imgFavNovel.setImageResource(fav.novelImg)
-        holder.tvName.text=fav.name
-        holder.tvAuthor.text=fav.author
+        val truyen = favs[position]
+        holder.imgFavNovel.setImageResource(truyen.imageRes)
+        holder.tvName.text = truyen.title
+        holder.tvAuthor.text = truyen.author
 
         // Enable marquee scrolling
         holder.tvName.isSelected = true
         holder.tvAuthor.isSelected = true
 
         holder.btnRead.setOnClickListener {
-            val intent = Intent(context, NovelDetailFragment::class.java)
-            intent.putExtra("name", fav.name)
-            context.startActivity(intent)
+            val bundle = Bundle()
+            bundle.putInt("id", truyen.id)
+            bundle.putString("title", truyen.title)
+            bundle.putInt("image", truyen.imageRes)
+            bundle.putString("author", truyen.author)
+
+            val detailFragment = NovelDetailFragment()
+            detailFragment.arguments = bundle
+
+            (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.flSectionsLayout, detailFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -50,6 +61,4 @@ class FavoriteAdapter (
         val tvAuthor: TextView = itemView.findViewById(R.id.tvAuthorName)
         val btnRead: Button = itemView.findViewById(R.id.btnRead)
     }
-
-
 }

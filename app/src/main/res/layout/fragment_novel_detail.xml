@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212">
@@ -31,6 +32,7 @@
             android:orientation="horizontal">
 
             <!-- Ảnh bìa -->
+
             <ImageView
                 android:id="@+id/imgDetail"
                 android:layout_width="120dp"
@@ -76,6 +78,16 @@
                     android:textColor="#BDBDBD" />
 
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/BgThemeColor"
+
+                android:layout_gravity="bottom"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
         </LinearLayout>
 
         <TextView

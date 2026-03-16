@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/myBgColor"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:weightSum="20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,9 +20,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/textView"
@@ -65,61 +68,59 @@
                 android:background="@drawable/rounded_button_background"
                 android:padding="12dp"
                 android:src="@drawable/searching_icon"
-                android:textColor="#DCAB1F"/>
+                android:textColor="#DCAB1F" />
 
         </LinearLayout>
 
         <FrameLayout
             android:id="@+id/flSectionsLayout"
             android:layout_width="match_parent"
-
-            android:layout_height="750dp">
-
-        </FrameLayout>
+            android:layout_height="0dp"
+            android:layout_weight="17.75"></FrameLayout>
 
         <LinearLayout
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <ImageButton
                 android:id="@+id/btnHome"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#1e1e1e"
-
                 android:src="@drawable/home_page"
                 android:textColor="#DCAB1F" />
 
             <ImageButton
                 android:id="@+id/btnFav"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#1e1e1e"
-
                 android:src="@drawable/likesection"
                 android:textColor="#DCAB1F" />
 
             <ImageButton
                 android:id="@+id/btnProfile"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#1e1e1e"
-
                 android:src="@drawable/profile_person_icon"
                 android:textColor="#DCAB1F" />
 
             <ImageButton
                 android:id="@+id/button3"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#1e1e1e"
-
                 android:src="@drawable/home_page"
                 android:textColor="#DCAB1F" />
 

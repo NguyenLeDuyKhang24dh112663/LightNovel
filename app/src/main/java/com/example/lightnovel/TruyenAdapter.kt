@@ -28,7 +28,7 @@ class TruyenAdapter (
 
         holder.txtTitle.text = truyen.title
 
-        holder.imgTruyen.setImageResource(truyen.image)
+        holder.imgTruyen.setImageResource(truyen.imageRes)
 
         holder.itemView.setOnClickListener {
             onClick(truyen)
