@@ -1,9 +1,13 @@
 package com.example.lightnovel
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,12 +24,41 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        val edtUser = findViewById<EditText>(R.id.edtUser)
+        val edtPass = findViewById<EditText>(R.id.edtPassword)
+        val btnLogin = findViewById<Button>(R.id.button5)
         val tvSignIn = findViewById<TextView>(R.id.tvSignIn)
         val btnBack = findViewById<ImageView>(R.id.ivBack)
+
+        val db = AccountDatabaseHelper(this)
+
+        btnLogin.setOnClickListener {
+            val user = edtUser.text.toString().trim()
+            val pass = edtPass.text.toString().trim()
+
+            if (user.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (db.login(user, pass)) {
+                val sharedPref = getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isLoggedIn", true)
+                    putString("username", user)
+                    apply()
+                }
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         btnBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         tvSignIn.setOnClickListener {

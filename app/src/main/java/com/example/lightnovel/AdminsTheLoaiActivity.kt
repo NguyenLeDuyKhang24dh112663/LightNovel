@@ -10,16 +10,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class AdminsActivity : AppCompatActivity(), TruyenAdminAdapter.OnItemClickListener {
+class AdminsTheLoaiActivity : AppCompatActivity(), TheLoaiAdminAdapter.OnItemClickListener {
 
     private lateinit var db: databaseHelper
-    private lateinit var adapter: TruyenAdminAdapter
-    private lateinit var novels: ArrayList<Truyen>
+    private lateinit var adapter: TheLoaiAdminAdapter
+    private lateinit var genres: ArrayList<TheLoai>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_admins)
+        setContentView(R.layout.activity_admins_the_loai)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -27,15 +27,15 @@ class AdminsActivity : AppCompatActivity(), TruyenAdminAdapter.OnItemClickListen
         }
 
         db = databaseHelper(this)
-        novels = db.getAllNovels()
+        genres = db.getAllGenresWithIds()
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = TruyenAdminAdapter(this, novels, this)
+        adapter = TheLoaiAdminAdapter(this, genres, this)
         recyclerView.adapter = adapter
 
         findViewById<Button>(R.id.btnAdd).setOnClickListener {
-            startActivity(Intent(this, AddEditActivity::class.java))
+            startActivity(Intent(this, TheLoaiAddEditActivity::class.java))
         }
     }
 
@@ -45,23 +45,20 @@ class AdminsActivity : AppCompatActivity(), TruyenAdminAdapter.OnItemClickListen
     }
 
     private fun refreshData() {
-        novels.clear()
-        novels.addAll(db.getAllNovels())
+        genres.clear()
+        genres.addAll(db.getAllGenresWithIds())
         adapter.notifyDataSetChanged()
     }
 
-    override fun onEdit(novel: Truyen) {
-        val intent = Intent(this, AddEditActivity::class.java)
-        intent.putExtra("id", novel.id)
-        intent.putExtra("Tên truyện", novel.title)
-        intent.putExtra("Tác giả", novel.author)
-        intent.putExtra("Mô tả", novel.description)
-        intent.putExtra("Ảnh", novel.imageRes)
+    override fun onEdit(genre: TheLoai) {
+        val intent = Intent(this, TheLoaiAddEditActivity::class.java)
+        intent.putExtra("id", genre.id)
+        intent.putExtra("name", genre.name)
         startActivity(intent)
     }
 
-    override fun onDelete(novel: Truyen) {
-        db.deleteNovel(novel.id)
+    override fun onDelete(genre: TheLoai) {
+        db.deleteGenre(genre.id)
         refreshData()
     }
 }

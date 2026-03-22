@@ -24,6 +24,7 @@ class TruyenAdminAdapter(
         val tvTtl: TextView = view.findViewById(R.id.tvTitle)
 
         val tvAu: TextView = view.findViewById(R.id.tvAuthor)
+        val tvDesc: TextView = view.findViewById(R.id.tvDesc)
         val ivNovelImg: ImageView = view.findViewById(R.id.ivNovelImg)
         val btnEdit: Button = view.findViewById(R.id.btnEdit)
         val btnDelete: Button = view.findViewById(R.id.btnDelete)
@@ -38,6 +39,11 @@ class TruyenAdminAdapter(
         val novel = novels[position]
         holder.tvTtl.text = "Tên: ${novel.title}"
         holder.tvAu.text = "Tác giả: ${novel.author}"
+        
+        // Explicitly check for null or empty to show "null" text
+        val descText = if (novel.description.isNullOrEmpty()) "null" else novel.description
+        holder.tvDesc.text = "Mô tả: $descText"
+
 
         if (novel.imageRes != 0) {
             holder.ivNovelImg.setImageResource(novel.imageRes)
@@ -51,8 +57,5 @@ class TruyenAdminAdapter(
     }
 
     override fun getItemCount() = novels.size
-
-
-
 
 }

@@ -20,6 +20,10 @@
         android:textColor="#D32F2F"
         android:textStyle="bold"
         android:gravity="center"
-        android:paddingTop="4dp"/>
+        android:paddingTop="4dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true" />
 
 </LinearLayout>

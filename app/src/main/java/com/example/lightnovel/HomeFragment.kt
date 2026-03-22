@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,40 +21,34 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel = ViewModelProvider(requireActivity()).get(TruyenViewModel::class.java)
 
+        // ===== Dropdown Thể loại (Exposed Dropdown Menu) =====
+        val autoCompleteGenres = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteGenres)
+        val genres = viewModel.getAllGenres()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, genres)
+        autoCompleteGenres.setAdapter(adapter)
+
+        autoCompleteGenres.setOnItemClickListener { parent, _, position, _ ->
+            val selectedGenre = parent.getItemAtPosition(position) as String
+            viewModel.filterByGenre(selectedGenre)
+        }
+
         // ===== RecyclerView Truyện =====
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // Initialize data if empty
-        if (viewModel.products.value == null) {
-            val list = listOf(
-                Truyen(1,"Đấu la đại lục", "Oda", R.drawable.daula),
-                Truyen(2,"Thần điêu đại hiệp", "Tác giả A", R.drawable.thandieu),
-                Truyen(3,"One Piece", "Rumiko", R.drawable.img),
-                Truyen(4,"Conan", "Tác giả B", R.drawable.banner1),
-                Truyen(5,"Đấu la", "Oda", R.drawable.daula),
-                Truyen(6,"Tomiya", "Tác giả A", R.drawable.thandieu),
-                Truyen(7,"Inuyasha", "Rumiko", R.drawable.img),
-                Truyen(8,"Luyện Sắc", "Tác giả B", R.drawable.banner1)
-            )
-            viewModel.setProducts(list)
-        }
-
         viewModel.products.observe(viewLifecycleOwner) { list ->
             recyclerView.adapter = TruyenAdapter(list) { truyen ->
                 viewModel.select(truyen)
-                // Tạo bundle để gửi dữ liệu
                 val bundle = Bundle()
                 bundle.putInt("id", truyen.id)
                 bundle.putString("title", truyen.title)
                 bundle.putInt("image", truyen.imageRes)
                 bundle.putString("author", truyen.author)
+                bundle.putString("description", truyen.description)
 
-                // Tạo fragment mới
                 val detailFragment = NovelDetailFragment()
                 detailFragment.arguments = bundle
 
-                // Mở trang mới
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.flSectionsLayout, detailFragment)
                     .addToBackStack(null)
@@ -71,5 +67,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val bannerAdapter = BannerAdapter(bannerList)
         viewPager.adapter = bannerAdapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshFromDb()
     }
 }

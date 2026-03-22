@@ -117,6 +117,7 @@
             android:layout_marginTop="24dp">
 
             <Button
+                android:id="@+id/btnStart"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
@@ -130,6 +131,7 @@
                 android:layout_height="match_parent"/>
 
             <Button
+                android:id="@+id/btnContinue"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:fontFamily="@font/montserrat_medium"
@@ -137,6 +139,30 @@
                 android:text="Đọc tiếp"
                 android:backgroundTint="#795548"
                 android:textColor="#FFFFFF"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp">
+
+            <!-- ====== Nút Share ====== -->
+            <Button
+                android:id="@+id/btnShare"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="⬆ Chia sẻ truyện"
+                android:backgroundTint="#37474F"
+                android:textColor="#FFFFFF"/>
+
+            <Button
+                android:id="@+id/btnCmts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bình luận" />
+
         </LinearLayout>
 
     </LinearLayout>

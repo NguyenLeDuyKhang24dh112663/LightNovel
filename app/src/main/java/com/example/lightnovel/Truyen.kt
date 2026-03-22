@@ -5,5 +5,6 @@ data class Truyen (
     val title: String,
     val author: String,
     val imageRes: Int,
+    val description: String?,
     val isFavorite: Boolean = false
 )

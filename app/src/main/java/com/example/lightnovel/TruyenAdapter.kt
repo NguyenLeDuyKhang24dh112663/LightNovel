@@ -27,6 +27,8 @@ class TruyenAdapter (
         val truyen = list[position]
 
         holder.txtTitle.text = truyen.title
+        // Enable marquee scrolling
+        holder.txtTitle.isSelected = true
 
         holder.imgTruyen.setImageResource(truyen.imageRes)
 

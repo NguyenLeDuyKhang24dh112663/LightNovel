@@ -29,6 +29,8 @@ class AddEditActivity : AppCompatActivity() {
         val etTtl = findViewById<EditText>(R.id.etTitle)
         val etAu = findViewById<EditText>(R.id.etAuthor)
         val etImg = findViewById<EditText>(R.id.etImgLink)
+        val etDesc = findViewById<EditText>(R.id.etDesc)
+
         val btnSave = findViewById<Button>(R.id.btnSave)
 
         val bundle = intent.extras
@@ -38,6 +40,7 @@ class AddEditActivity : AppCompatActivity() {
                 etTtl.setText(bundle.getString("Tên truyện"))
                 etAu.setText(bundle.getString("Tác giả"))
                 etImg.setText(bundle.getInt("Ảnh").toString())
+                etDesc.setText(bundle.getString("Mô tả"))
             }
         }
 
@@ -45,9 +48,9 @@ class AddEditActivity : AppCompatActivity() {
             val title = etTtl.text.toString().trim()
             val author = etAu.text.toString().trim()
             val imgStr = etImg.text.toString().trim()
+            val desc = etDesc.text.toString().trim()
 
             val resId = resources.getIdentifier(imgStr, "drawable", packageName)
-            //val imgStr = etImg.text.toString().trim()
 
             if (title.isEmpty() || author.isEmpty() || imgStr.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
@@ -59,6 +62,7 @@ class AddEditActivity : AppCompatActivity() {
                 title = title,
                 author = author,
                 imageRes = resId,
+                description = if (desc.isEmpty()) null else desc,
                 isFavorite = false
             )
 

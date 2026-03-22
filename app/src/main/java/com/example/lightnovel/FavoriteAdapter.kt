@@ -42,6 +42,7 @@ class FavoriteAdapter (
             bundle.putString("title", truyen.title)
             bundle.putInt("image", truyen.imageRes)
             bundle.putString("author", truyen.author)
+            bundle.putString("description", truyen.description)
 
             val detailFragment = NovelDetailFragment()
             detailFragment.arguments = bundle

@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LightNovel">
         <activity
+            android:name=".Comment_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TheLoaiAddEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddEditActivity"
             android:exported="false" />
         <activity
@@ -24,7 +33,7 @@
             android:name=".AdminsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AdminsTheLoaiActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

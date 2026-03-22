@@ -1,61 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/myBgColor"
-    tools:context=".SigninActivity">
+    android:orientation="vertical"
+    tools:context=".EditProfileFragment">
+
+    <LinearLayout
+        android:id="@+id/secHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F4A62A"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/go_back_ic"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="10dp"
+            android:text="Chỉnh sửa thông tin"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="20dp">
+            android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
-                android:fontFamily="@font/montaga"
-                android:text="LightNovel"
-                android:textAlignment="center"
-                android:textColor="@color/BgThemeColor"
-                android:textSize="70sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="Đăng ký tài khoản"
-                android:textAlignment="center"
-                android:textColor="@color/BgThemeColor"
-                android:textSize="30sp" />
-
-            <!-- TEXT INPUT LAYOUTS -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
+
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtSurname"
+                    android:id="@+id/editUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Tên người dùng"
+                    android:textColor="@color/BgThemeColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/HintColor"
+                app:boxStrokeColor="@color/BgThemeColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Mật khẩu"
+                    android:textColor="@color/BgThemeColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/HintColor"
+                app:boxStrokeColor="@color/BgThemeColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editConfirmPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Xác nhận mật "
+                    android:textColor="@color/BgThemeColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/HintColor"
+                app:boxStrokeColor="@color/BgThemeColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editSurname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
@@ -69,8 +114,9 @@
                 android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
+
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtFirstName"
+                    android:id="@+id/editFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
@@ -84,23 +130,9 @@
                 android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:hint="Tên người dùng (Username)"
-                    android:textColor="@color/BgThemeColor" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="@color/HintColor"
-                app:boxStrokeColor="@color/BgThemeColor">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtEmail"
+                    android:id="@+id/editEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
@@ -114,12 +146,13 @@
                 android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
+
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPhoneNum"
+                    android:id="@+id/editPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
-                    android:hint="Số điện thoại (không bắt buộc)"
+                    android:hint="Số điện thoại"
                     android:textColor="@color/BgThemeColor" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,12 +162,13 @@
                 android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
+
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtDoB"
+                    android:id="@+id/editDoB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:clickable="true"
+                    android:focusable="false"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Ngày sinh"
                     android:textColor="@color/BgThemeColor" />
@@ -147,8 +181,9 @@
                 android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
+
                 <AutoCompleteTextView
-                    android:id="@+id/edtGender"
+                    android:id="@+id/editGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
@@ -157,102 +192,16 @@
                     android:textColor="@color/BgThemeColor" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="@color/HintColor"
-                app:boxStrokeColor="@color/BgThemeColor"
-                app:passwordToggleEnabled="true">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:hint="Mật khẩu"
-                    android:inputType="textPassword"
-                    android:textColor="@color/BgThemeColor" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilConfirmPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="@color/HintColor"
-                app:boxStrokeColor="@color/BgThemeColor"
-                app:passwordToggleEnabled="true">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtConfirmPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:hint="Xác nhận mật khẩu"
-                    android:inputType="textPassword"
-                    android:textColor="@color/BgThemeColor" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--        ĐĂNG KÝ     -->
-
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="120dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="Đăng ký"
+                android:text="Lưu thay đổi"
                 android:textColor="@color/black"
-                android:textSize="18sp"
                 app:backgroundTint="@color/BgThemeColor" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="71dp"
-                android:gravity="center_vertical"
-
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text="Bạn đã có tài khoản ?"
-
-                    android:textAlignment="viewEnd"
-                    android:textColor="@color/HintColor"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/tvLogIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text=" ĐĂNG NHẬP"
-
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/BgThemeColor"
-                    android:textSize="20sp" />
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- Moved ivBack to the bottom so it is drawn on top of the ScrollView -->
-    <ImageView
-        android:id="@+id/ivBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/go_back_ic" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

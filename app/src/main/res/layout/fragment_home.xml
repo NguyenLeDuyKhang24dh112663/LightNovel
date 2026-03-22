@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,35 +10,84 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:id="@+id/secHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:background="#F4A62A"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trang chủ"
+                android:textColor="@color/black"
+                android:textStyle="bold|italic"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat_medium"/>
+
+        </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerBanner"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="8dp"/>
-        <TextView
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mới Nhất"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#D32F2F"
-            android:fontFamily="@font/montserrat_medium"
-            android:padding="16dp"/>
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Mới Nhất"
+                android:textColor="#D32F2F"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Sử dụng TextInputLayout để tạo Dropdown kiểu hiện đại -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menuGenres"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:hintEnabled="false"
+                app:boxStrokeColor="#F4A62A"
+                app:boxBackgroundColor="@color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:text="Tất cả"
+                    android:padding="10dp"
+                    android:backgroundTint="@color/HintColor"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/montserrat_medium"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"/>
-
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:paddingHorizontal="8dp"/>
 
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
