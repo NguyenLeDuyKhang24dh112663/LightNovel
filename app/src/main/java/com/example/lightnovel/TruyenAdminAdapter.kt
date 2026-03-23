@@ -15,6 +15,8 @@ class TruyenAdminAdapter(
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<TruyenAdminAdapter.TruyenAdminViewHolder>() {
 
+    private val db = databaseHelper(context)
+
     interface OnItemClickListener {
         fun onEdit(novel: Truyen)
         fun onDelete(novel: Truyen)
@@ -22,8 +24,8 @@ class TruyenAdminAdapter(
 
     inner class TruyenAdminViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTtl: TextView = view.findViewById(R.id.tvTitle)
-
         val tvAu: TextView = view.findViewById(R.id.tvAuthor)
+        val tvGenre: TextView = view.findViewById(R.id.tvGenre)
         val tvDesc: TextView = view.findViewById(R.id.tvDesc)
         val ivNovelImg: ImageView = view.findViewById(R.id.ivNovelImg)
         val btnEdit: Button = view.findViewById(R.id.btnEdit)
@@ -39,6 +41,15 @@ class TruyenAdminAdapter(
         val novel = novels[position]
         holder.tvTtl.text = "Tên: ${novel.title}"
         holder.tvAu.text = "Tác giả: ${novel.author}"
+        
+        // Lấy thể loại của truyện từ database
+        val genres = db.getGenresForNovel(novel.id)
+        val genreNames = if (genres.isNotEmpty()) {
+            genres.joinToString(", ") { it.name }
+        } else {
+            "Chưa có thể loại"
+        }
+        holder.tvGenre.text = "Thể loại: $genreNames"
         
         // Explicitly check for null or empty to show "null" text
         val descText = if (novel.description.isNullOrEmpty()) "null" else novel.description

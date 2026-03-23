@@ -31,6 +31,17 @@
         android:textSize="16sp"
         android:layout_marginTop="4dp"
         android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thể loại"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/LightRed" />
+
     <TextView
         android:id="@+id/tvDesc"
         android:layout_width="match_parent"

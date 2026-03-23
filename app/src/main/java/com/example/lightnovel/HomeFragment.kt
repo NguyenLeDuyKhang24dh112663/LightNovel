@@ -23,13 +23,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         // ===== Dropdown Thể loại (Exposed Dropdown Menu) =====
         val autoCompleteGenres = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteGenres)
-        val genres = viewModel.getAllGenres()
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, genres)
-        autoCompleteGenres.setAdapter(adapter)
+        
+        updateGenresAdapter(autoCompleteGenres)
 
         autoCompleteGenres.setOnItemClickListener { parent, _, position, _ ->
             val selectedGenre = parent.getItemAtPosition(position) as String
             viewModel.filterByGenre(selectedGenre)
+        }
+        
+        // Thêm click listener để đảm bảo dropdown hiện ra khi click vào
+        autoCompleteGenres.setOnClickListener {
+            autoCompleteGenres.showDropDown()
         }
 
         // ===== RecyclerView Truyện =====
@@ -69,8 +73,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewPager.adapter = bannerAdapter
     }
 
+    private fun updateGenresAdapter(autoCompleteGenres: AutoCompleteTextView) {
+        val genres = viewModel.getAllGenres()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, genres)
+        autoCompleteGenres.setAdapter(adapter)
+        
+        // Quan trọng: Sử dụng filter = false khi đặt text ban đầu để tránh việc 
+        // AutoCompleteTextView lọc mất các item khác trong danh sách dropdown.
+        val currentText = autoCompleteGenres.text.toString()
+        if (currentText.isNotEmpty()) {
+            autoCompleteGenres.setText(currentText, false)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.refreshFromDb()
+        // Cập nhật lại danh sách thể loại từ database khi quay lại màn hình này
+        view?.findViewById<AutoCompleteTextView>(R.id.autoCompleteGenres)?.let {
+            updateGenresAdapter(it)
+        }
     }
 }

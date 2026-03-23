@@ -6,4 +6,5 @@
     <color name="BgThemeColor">#ffb366</color>
     <color name="HintColor">#ffe0b3</color>
     <color name="GreyButton">#1e1e1e</color>
+    <color name="LightRed">#D32F2F</color>
 </resources>
