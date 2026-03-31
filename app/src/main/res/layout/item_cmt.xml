@@ -54,6 +54,27 @@
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Nội dung" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ibDeleteCmt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/GreyButton"
+                    app:srcCompat="@drawable/delete_ic" />
+
+                <ImageButton
+                    android:id="@+id/ibEditCmt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/GreyButton"
+                    app:srcCompat="@drawable/edit_comment_ic" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

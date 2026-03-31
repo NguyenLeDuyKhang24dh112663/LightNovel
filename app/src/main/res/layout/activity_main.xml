@@ -55,13 +55,13 @@
                 android:visibility="gone" />
 
             <ImageButton
-                android:id="@+id/imgBtnNotif"
+                android:id="@+id/imgBtnHistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/rounded_button_background"
                 android:padding="12dp"
-                android:src="@drawable/ic_action_name" />
+                android:src="@drawable/read_history_ic" />
 
             <ImageButton
                 android:id="@+id/ibSearch"
@@ -113,14 +113,6 @@
                 android:layout_weight="1"
                 android:background="#1e1e1e"
                 android:src="@drawable/profile_person_icon" />
-
-            <ImageButton
-                android:id="@+id/button3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1e1e1e"
-                android:src="@drawable/home_page" />
 
         </LinearLayout>
     </LinearLayout>

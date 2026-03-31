@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         val btnFav = findViewById<ImageButton>(R.id.btnFav)
         val btnProfile = findViewById<ImageButton>(R.id.btnProfile)
         val btnHome = findViewById<ImageButton>(R.id.btnHome)
+        val btnHistory = findViewById<ImageButton>(R.id.imgBtnHistory)
         ibSearch = findViewById(R.id.ibSearch)
         edtSearch = findViewById(R.id.edtSearch)
         tvLogo = findViewById(R.id.textView)
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         val favSecFragment = FavoriteSectionFragment()
         val profSecFragment = ProfileSectionFragment()
         val homeFragment = HomeFragment()
+        val historyFragment = ReadHistoryFragment()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, homeFragment).commit()
@@ -81,6 +83,11 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, homeFragment).addToBackStack(null).commit()
             hideSearchUI()
         }
+
+        btnHistory.setOnClickListener {
+            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, historyFragment).addToBackStack(null).commit()
+            hideSearchUI()
+        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -105,8 +112,6 @@ class MainActivity : AppCompatActivity() {
     private fun hideSearchUI() {
         tvLogo.visibility = View.VISIBLE
         edtSearch.visibility = View.GONE
-        // Optional: clear search when hiding
-        // edtSearch.setText("")
     }
 
     private fun hideKeyboard() {

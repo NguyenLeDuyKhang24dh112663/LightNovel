@@ -1,6 +1,7 @@
 package com.example.lightnovel
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class TruyenAdminAdapter(
         val ivNovelImg: ImageView = view.findViewById(R.id.ivNovelImg)
         val btnEdit: Button = view.findViewById(R.id.btnEdit)
         val btnDelete: Button = view.findViewById(R.id.btnDelete)
+        val btnChapter: Button = view.findViewById(R.id.btnChapter)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TruyenAdminViewHolder {
@@ -42,7 +44,6 @@ class TruyenAdminAdapter(
         holder.tvTtl.text = "Tên: ${novel.title}"
         holder.tvAu.text = "Tác giả: ${novel.author}"
         
-        // Lấy thể loại của truyện từ database
         val genres = db.getGenresForNovel(novel.id)
         val genreNames = if (genres.isNotEmpty()) {
             genres.joinToString(", ") { it.name }
@@ -51,7 +52,6 @@ class TruyenAdminAdapter(
         }
         holder.tvGenre.text = "Thể loại: $genreNames"
         
-        // Explicitly check for null or empty to show "null" text
         val descText = if (novel.description.isNullOrEmpty()) "null" else novel.description
         holder.tvDesc.text = "Mô tả: $descText"
 
@@ -59,12 +59,19 @@ class TruyenAdminAdapter(
         if (novel.imageRes != 0) {
             holder.ivNovelImg.setImageResource(novel.imageRes)
         } else {
-            // placeholder
             holder.ivNovelImg.setImageResource(R.drawable.ic_launcher_background)
         }
 
         holder.btnEdit.setOnClickListener { listener.onEdit(novel) }
         holder.btnDelete.setOnClickListener { listener.onDelete(novel) }
+        
+        holder.btnChapter.setOnClickListener {
+            val intent = Intent(context, ChaptersListActivity::class.java).apply {
+                putExtra("novel_id", novel.id)
+                putExtra("novel_name", novel.title)
+            }
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = novels.size

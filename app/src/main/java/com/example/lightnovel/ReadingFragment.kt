@@ -1,24 +1,31 @@
 package com.example.lightnovel
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.content.Context
-import kotlin.apply
-
+import androidx.recyclerview.widget.RecyclerView
 
 class ReadingFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var layoutManager: LinearLayoutManager
-
-    private var chuong = 1
-    private var vitri = 0
-    private var currentPosition = 0
+    private lateinit var db: databaseHelper
+    private lateinit var rvChapters: RecyclerView
+    private lateinit var layoutChapterList: LinearLayout
+    private lateinit var layoutChapterContent: LinearLayout
+    private lateinit var tvContent: TextView
+    private lateinit var tvCurrentChapterTitle: TextView
+    private lateinit var scrollViewContent: NestedScrollView
+    
+    private var novelId: Int = -1
+    private var novelTitle: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,47 +34,82 @@ class ReadingFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_reading, container, false)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        layoutManager = LinearLayoutManager(requireContext())
+        db = databaseHelper(requireContext())
+        
+        // Nhận dữ liệu
+        novelId = arguments?.getInt("id") ?: -1
+        novelTitle = arguments?.getString("title") ?: "Đang đọc"
+        val chapterNumberToLoad = arguments?.getInt("chapter_number", -1) ?: -1
+        val isContinue = arguments?.getBoolean("continue", false) ?: false
 
-        recyclerView.layoutManager = layoutManager
+        // Ánh xạ View
+        layoutChapterList = view.findViewById(R.id.layoutChapterList)
+        layoutChapterContent = view.findViewById(R.id.layoutChapterContent)
+        rvChapters = view.findViewById(R.id.rvChaptersList)
+        tvContent = view.findViewById(R.id.tvContent)
+        tvCurrentChapterTitle = view.findViewById(R.id.tvCurrentChapterTitle)
+        scrollViewContent = view.findViewById(R.id.scrollViewContent)
+        
+        val tvNovelTitle = view.findViewById<TextView>(R.id.tvReadingNovelTitle)
+        tvNovelTitle.text = "Chương của: $novelTitle"
 
-        // 🔥 Nhận dữ liệu
-        chuong = arguments?.getInt("chuong") ?: 1
-        vitri = arguments?.getInt("vitri") ?: 0
+        val btnBack = view.findViewById<ImageView>(R.id.ivBack)
+        val btnTop = view.findViewById<Button>(R.id.btnMoveToTop)
+        val btnBottom = view.findViewById<Button>(R.id.btnMoveToBottom)
 
-        // 🔥 Fake data
-        val list = List(100) { "Chương $chuong - dòng ${it + 1}" }
+        // Setup RecyclerView danh sách chương
+        rvChapters.layoutManager = LinearLayoutManager(requireContext())
+        
+        val chapters = db.getChaptersForNovel(novelId)
+        val adapter = ReadingChapterListAdapter(requireContext(), chapters) { chapter ->
+            showChapterContent(chapter)
+        }
+        rvChapters.adapter = adapter
 
-// Dùng ReadingAdapter thay vì TruyenAdapter
-        recyclerView.adapter = ReadingAdapter(list)
-
-        // 🔥 Scroll lại
-        recyclerView.post {
-            recyclerView.scrollToPosition(vitri)
+        // Kiểm tra xem có phải nhấn "Đọc tiếp" không
+        if (isContinue && chapterNumberToLoad != -1) {
+            val chapter = chapters.find { it.number == chapterNumberToLoad }
+            if (chapter != null) {
+                showChapterContent(chapter)
+            }
         }
 
-        // 🔥 Lấy vị trí khi scroll
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                currentPosition = layoutManager.findFirstVisibleItemPosition()
-            }
-        })
+        // Sự kiện nút bấm
+        btnBack.setOnClickListener {
+            showChapterList()
+        }
+
+        btnTop.setOnClickListener {
+            scrollViewContent.fullScroll(View.FOCUS_UP)
+        }
+
+        btnBottom.setOnClickListener {
+            scrollViewContent.fullScroll(View.FOCUS_DOWN)
+        }
 
         return view
     }
 
-    // 🔥 Lưu vị trí
-    override fun onPause() {
-        super.onPause()
-
-        val pref = requireContext()
-            .getSharedPreferences("READING", Context.MODE_PRIVATE)
-
-        pref.edit().apply {
-            putInt("chuong", chuong)
-            putInt("vitri", currentPosition)
-            apply()
+    private fun showChapterContent(chapter: Chuong) {
+        layoutChapterList.visibility = View.GONE
+        layoutChapterContent.visibility = View.VISIBLE
+        
+        tvCurrentChapterTitle.text = "Chương ${chapter.number}: ${chapter.title}"
+        tvContent.text = chapter.content
+        
+        // Lưu lịch sử đọc khi mở chương
+        val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", null)
+        if (username != null) {
+            db.addToHistory(username, novelId, chapter.number)
         }
+        
+        // Cuộn lên đầu khi mở chương mới
+        scrollViewContent.scrollTo(0, 0)
+    }
+
+    private fun showChapterList() {
+        layoutChapterList.visibility = View.VISIBLE
+        layoutChapterContent.visibility = View.GONE
     }
 }

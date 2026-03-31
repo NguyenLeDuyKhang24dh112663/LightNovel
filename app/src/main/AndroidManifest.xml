@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LightNovel">
         <activity
+            android:name=".ChaptersListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEditChapterActivity"
+            android:exported="false" />
+        <activity
             android:name=".Comment_Activity"
             android:exported="false" />
         <activity

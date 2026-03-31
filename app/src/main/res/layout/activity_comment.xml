@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#F4A62A"
+        app:titleTextColor="@color/black"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:title="Bình luận"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +46,17 @@
             android:paddingStart="12dp" />
 
         <Button
+            android:id="@+id/btnCancelEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hủy"
+            android:backgroundTint="#666666"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginEnd="4dp"
+            android:visibility="gone" />
+
+        <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,14 +65,5 @@
             android:textColor="#FFFFFF"
             android:fontFamily="@font/montserrat_medium" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="←"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@android:color/transparent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

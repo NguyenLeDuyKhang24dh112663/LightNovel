@@ -12,11 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
 
     private lateinit var viewModel: TruyenViewModel
+    private lateinit var db: databaseHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(TruyenViewModel::class.java)
+        db = databaseHelper(requireContext())
 
         val novelId = arguments?.getInt("id") ?: -1
         val title = arguments?.getString("title")
@@ -29,22 +31,18 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         val tvDescription = view.findViewById<TextView>(R.id.txtMoTa)
         val tvAuthor = view.findViewById<TextView>(R.id.txtTacGia)
         val btnFav = view.findViewById<ImageView>(R.id.btnFavorite)
-        val btnStart = view.findViewById<TextView>(R.id.btnStart)
+        val btnViewChapters = view.findViewById<TextView>(R.id.btnViewChapters)
         val btnContinue = view.findViewById<TextView>(R.id.btnContinue)
         val btnShare = view.findViewById<TextView>(R.id.btnShare)
         val btnCmts = view.findViewById<TextView>(R.id.btnCmts)
 
-
-
         tvTitle.text = title
         tvAuthor.text = "Tác giả: $author"
         
-        // Show default text if description is null or empty
         tvDescription.text = if (description.isNullOrEmpty()) "Không có mô tả." else description
 
         image?.let { img.setImageResource(it) }
 
-        // Observe the list to get the latest favorite status for this novel
         viewModel.products.observe(viewLifecycleOwner) { list ->
             val currentNovel = list.find { it.id == novelId }
             currentNovel?.let {
@@ -62,44 +60,48 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
             }
         }
 
-        btnStart.setOnClickListener {
-            val fragment = ReadingFragment()
-            val bundle = Bundle()
+        btnViewChapters.setOnClickListener {
+            if (novelId != -1) {
+                val fragment = ReadingFragment()
+                val bundle = Bundle().apply {
+                    putInt("id", novelId)
+                    putString("title", title)
+                }
+                fragment.arguments = bundle
 
-            bundle.putInt("chuong", 1)
-            bundle.putInt("vitri", 0)
-
-            fragment.arguments = bundle
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.flSectionsLayout, fragment)
-                .addToBackStack(null)
-                .commit()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.flSectionsLayout, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
-        // 🔥 Đọc tiếp
         btnContinue.setOnClickListener {
-            val pref = requireContext()
-                .getSharedPreferences("READING", Context.MODE_PRIVATE)
+            if (novelId != -1) {
+                val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+                val username = sharedPref.getString("username", null)
+                
+                var lastChapter = 1
+                if (username != null) {
+                    lastChapter = db.getLastReadChapter(username, novelId)
+                }
 
-            val chuong = pref.getInt("chuong", 1)
-            val vitri = pref.getInt("vitri", 0)
+                val fragment = ReadingFragment()
+                val bundle = Bundle().apply {
+                    putInt("id", novelId)
+                    putString("title", title)
+                    putInt("chapter_number", lastChapter)
+                    putBoolean("continue", true)
+                }
+                fragment.arguments = bundle
 
-            val fragment = ReadingFragment()
-            val bundle = Bundle()
-
-            bundle.putInt("chuong", chuong)
-            bundle.putInt("vitri", vitri)
-
-            fragment.arguments = bundle
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.flSectionsLayout, fragment)
-                .addToBackStack(null)
-                .commit()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.flSectionsLayout, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
-        // Nút Share
         btnShare.setOnClickListener {
             val shareText = "📖 Mình đang đọc $title của tác giả $author trên Gấu Truyện!\nBạn cũng thử đọc đi nhé 😄"
             val intent = Intent(Intent.ACTION_SEND).apply {
@@ -110,8 +112,13 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         }
 
         btnCmts.setOnClickListener {
-            val intent = Intent(requireContext(), Comment_Activity::class.java)
-            startActivity(intent)
+            if (novelId != -1) {
+                val intent = Intent(requireContext(), Comment_Activity::class.java).apply {
+                    putExtra("novel_id", novelId)
+                    putExtra("novel_title", title)
+                }
+                startActivity(intent)
+            }
         }
     }
 }

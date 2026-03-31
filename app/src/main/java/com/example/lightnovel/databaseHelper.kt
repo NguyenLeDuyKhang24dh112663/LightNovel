@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class databaseHelper(context: Context)
-    : SQLiteOpenHelper(context, "novels.db", null, 6) {
+    : SQLiteOpenHelper(context, "novels.db", null, 10) { // Tăng version lên 10
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
@@ -17,6 +17,17 @@ class databaseHelper(context: Context)
                 image INTEGER,
                 description TEXT,
                 isFavorite INTEGER DEFAULT 0
+            )
+        """)
+
+        db.execSQL("""
+            CREATE TABLE chapters(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                novel_id INTEGER,
+                chapter_number INTEGER,
+                title TEXT,
+                content TEXT,
+                FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE
             )
         """)
 
@@ -42,6 +53,28 @@ class databaseHelper(context: Context)
                 username TEXT,
                 novel_id INTEGER,
                 PRIMARY KEY(username, novel_id)
+            )
+        """)
+
+        db.execSQL("""
+            CREATE TABLE read_history(
+                username TEXT,
+                novel_id INTEGER,
+                chapter_number INTEGER DEFAULT 1,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY(username, novel_id),
+                FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE
+            )
+        """)
+
+        db.execSQL("""
+            CREATE TABLE comments(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                novel_id INTEGER,
+                username TEXT,
+                content TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE
             )
         """)
         
@@ -72,6 +105,201 @@ class databaseHelper(context: Context)
             db.execSQL("CREATE TABLE IF NOT EXISTS novel_genres(novel_id INTEGER, genre_id INTEGER, PRIMARY KEY(novel_id, genre_id), FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE, FOREIGN KEY(genre_id) REFERENCES genres(id) ON DELETE CASCADE)")
             seedGenres(db)
         }
+        if (oldVersion < 7) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS read_history(
+                    username TEXT,
+                    novel_id INTEGER,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY(username, novel_id),
+                    FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE
+                )
+            """)
+        }
+        if (oldVersion < 8) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS chapters(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    novel_id INTEGER,
+                    chapter_number INTEGER,
+                    title TEXT,
+                    content TEXT,
+                    FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE
+                )
+            """)
+        }
+        if (oldVersion < 9) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS comments(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    novel_id INTEGER,
+                    username TEXT,
+                    content TEXT,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(novel_id) REFERENCES novels(id) ON DELETE CASCADE
+                )
+            """)
+        }
+        if (oldVersion < 10) {
+            // Thêm cột chapter_number vào read_history nếu chưa có
+            try {
+                db.execSQL("ALTER TABLE read_history ADD COLUMN chapter_number INTEGER DEFAULT 1")
+            } catch (e: Exception) {}
+        }
+    }
+
+    // --- Comment Operations ---
+
+    fun insertComment(novelId: Int, username: String, content: String): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("novel_id", novelId)
+            put("username", username)
+            put("content", content)
+            put("timestamp", System.currentTimeMillis())
+        }
+        return db.insert("comments", null, values)
+    }
+
+    fun getCommentsForNovel(novelId: Int): ArrayList<Comment> {
+        val list = ArrayList<Comment>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM comments WHERE novel_id = ? ORDER BY timestamp DESC", arrayOf(novelId.toString()))
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(Comment(
+                    id = cursor.getInt(0),
+                    novelId = cursor.getInt(1),
+                    username = cursor.getString(2),
+                    content = cursor.getString(3),
+                    timestamp = cursor.getLong(4)
+                ))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return list
+    }
+
+    fun deleteComment(id: Int): Int {
+        val db = writableDatabase
+        return db.delete("comments", "id=?", arrayOf(id.toString()))
+    }
+
+    fun updateComment(id: Int, content: String): Int {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("content", content)
+        }
+        return db.update("comments", values, "id=?", arrayOf(id.toString()))
+    }
+
+    // --- Chapter Operations ---
+
+    fun insertChapter(novelId: Int, chapterNumber: Int, title: String, content: String): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("novel_id", novelId)
+            put("chapter_number", chapterNumber)
+            put("title", title)
+            put("content", content)
+        }
+        return db.insert("chapters", null, values)
+    }
+
+    fun updateChapter(chapterId: Int, chapterNumber: Int, title: String, content: String): Int {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("chapter_number", chapterNumber)
+            put("title", title)
+            put("content", content)
+        }
+        return db.update("chapters", values, "id=?", arrayOf(chapterId.toString()))
+    }
+
+    fun deleteChapter(chapterId: Int): Int {
+        val db = writableDatabase
+        return db.delete("chapters", "id=?", arrayOf(chapterId.toString()))
+    }
+
+    fun getChaptersForNovel(novelId: Int): ArrayList<Chuong> {
+        val list = ArrayList<Chuong>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM chapters WHERE novel_id = ? ORDER BY chapter_number ASC", arrayOf(novelId.toString()))
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(Chuong(
+                    id = cursor.getInt(0),
+                    novelId = cursor.getInt(1),
+                    number = cursor.getInt(2),
+                    title = cursor.getString(3),
+                    content = cursor.getString(4)
+                ))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return list
+    }
+
+    fun getChapterContent(novelId: Int, chapterNumber: Int): String? {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT content FROM chapters WHERE novel_id = ? AND chapter_number = ?", arrayOf(novelId.toString(), chapterNumber.toString()))
+        var content: String? = null
+        if (cursor.moveToFirst()) {
+            content = cursor.getString(0)
+        }
+        cursor.close()
+        return content
+    }
+
+    // --- History Operations ---
+
+    fun addToHistory(username: String, novelId: Int, chapterNumber: Int = 1) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("username", username)
+            put("novel_id", novelId)
+            put("chapter_number", chapterNumber)
+            put("timestamp", System.currentTimeMillis()) 
+        }
+        db.insertWithOnConflict("read_history", null, values, SQLiteDatabase.CONFLICT_REPLACE)
+    }
+
+    fun getLastReadChapter(username: String, novelId: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT chapter_number FROM read_history WHERE username = ? AND novel_id = ?", arrayOf(username, novelId.toString()))
+        var chapterNumber = 1
+        if (cursor.moveToFirst()) {
+            chapterNumber = cursor.getInt(0)
+        }
+        cursor.close()
+        return chapterNumber
+    }
+
+    fun getReadHistory(username: String): ArrayList<Truyen> {
+        val list = ArrayList<Truyen>()
+        val db = readableDatabase
+        val query = """
+            SELECT n.*, (SELECT COUNT(*) FROM favorites f WHERE f.novel_id = n.id AND f.username = ?) as userFavorite
+            FROM novels n
+            JOIN read_history rh ON n.id = rh.novel_id
+            WHERE rh.username = ?
+            ORDER BY rh.timestamp DESC
+        """
+        val cursor = db.rawQuery(query, arrayOf(username, username))
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(Truyen(
+                    id = cursor.getInt(0),
+                    title = cursor.getString(1),
+                    author = cursor.getString(2),
+                    imageRes = cursor.getInt(3),
+                    description = cursor.getString(4),
+                    isFavorite = cursor.getInt(6) > 0
+                ))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return list
     }
 
     // --- Genre Operations ---
@@ -203,7 +431,7 @@ class databaseHelper(context: Context)
                     author = cursor.getString(2),
                     imageRes = cursor.getInt(3),
                     description = cursor.getString(4),
-                    isFavorite = cursor.getInt(6) > 0 // Sử dụng cột userFavorite (index 6)
+                    isFavorite = cursor.getInt(6) > 0 
                 ))
             } while (cursor.moveToNext())
         }
@@ -241,7 +469,7 @@ class databaseHelper(context: Context)
                     author = cursor.getString(2),
                     imageRes = cursor.getInt(3),
                     description = cursor.getString(4),
-                    isFavorite = cursor.getInt(6) > 0 // Sử dụng cột userFavorite (index 6)
+                    isFavorite = cursor.getInt(6) > 0 
                 ))
             } while (cursor.moveToNext())
         }
@@ -266,6 +494,9 @@ class databaseHelper(context: Context)
         val db = writableDatabase
         db.delete("favorites", "novel_id=?", arrayOf(id.toString()))
         db.delete("novel_genres", "novel_id=?", arrayOf(id.toString()))
+        db.delete("read_history", "novel_id=?", arrayOf(id.toString()))
+        db.delete("chapters", "novel_id=?", arrayOf(id.toString()))
+        db.delete("comments", "novel_id=?", arrayOf(id.toString()))
         return db.delete("novels", "id=?", arrayOf(id.toString()))
     }
 }
