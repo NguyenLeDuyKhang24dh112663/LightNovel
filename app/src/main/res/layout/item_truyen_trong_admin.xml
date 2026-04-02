@@ -62,6 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/ThemeDark"
             android:layout_marginEnd="4dp"
             android:text="Sửa"/>
         <Button
@@ -69,6 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/Grey"
             android:layout_marginStart="4dp"
             android:text="Xóa"/>
 
@@ -80,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Các chương"
-        android:background="@color/LightRed"
+        android:backgroundTint="@color/LightRed"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_weight="1"

@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.widget.Toolbar
 
 class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
 
@@ -32,6 +33,11 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         val image = arguments?.getInt("image")
         val description = arguments?.getString("description") ?: ""
         val author = arguments?.getString("author")
+
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbarDetail)
+        toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
 
         val tvTitle = view.findViewById<TextView>(R.id.txtTen)
         val img = view.findViewById<ImageView>(R.id.imgDetail)

@@ -67,9 +67,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thêm chương mới"
-        android:textSize="16sp"
-        android:padding="12dp"
-        android:backgroundTint="@color/LightRed"
+        android:textSize="20sp"
+        android:backgroundTint="@color/Green_success"
         android:textColor="@color/white" />
 
 </LinearLayout>

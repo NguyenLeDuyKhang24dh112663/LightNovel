@@ -10,7 +10,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_margin="16dp">
 
         <EditText
             android:id="@+id/etTitle"
@@ -80,6 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Lưu"
+            android:textSize="20dp"
+            android:backgroundTint="@color/Green_success"
             app:layout_constraintTop_toBottomOf="@id/tvSelectedGenres"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
