@@ -21,10 +21,10 @@
             android:name=".Comment_Activity"
             android:exported="false" />
         <activity
-            android:name=".AdminsTheLoaiActivity"
+            android:name=".TheLoaiAddEditActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminsActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".AddEditActivity"
@@ -33,10 +33,10 @@
             android:name=".SigninActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".AdminsTheLoaiActivity"
             android:exported="false" />
         <activity
-            android:name=".TheLoaiAddEditActivity"
+            android:name=".AdminsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

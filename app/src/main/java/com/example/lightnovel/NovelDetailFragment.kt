@@ -3,16 +3,23 @@ package com.example.lightnovel
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 
 class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
 
     private lateinit var viewModel: TruyenViewModel
     private lateinit var db: databaseHelper
+    private var isDescriptionExpanded = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,7 +30,7 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         val novelId = arguments?.getInt("id") ?: -1
         val title = arguments?.getString("title")
         val image = arguments?.getInt("image")
-        val description = arguments?.getString("description")
+        val description = arguments?.getString("description") ?: ""
         val author = arguments?.getString("author")
 
         val tvTitle = view.findViewById<TextView>(R.id.txtTen)
@@ -39,7 +46,7 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         tvTitle.text = title
         tvAuthor.text = "Tác giả: $author"
         
-        tvDescription.text = if (description.isNullOrEmpty()) "Không có mô tả." else description
+        setupExpandableDescription(tvDescription, description)
 
         image?.let { img.setImageResource(it) }
 
@@ -120,5 +127,45 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun setupExpandableDescription(textView: TextView, fullText: String) {
+        val limit = 200
+        if (fullText.length <= limit) {
+            textView.text = fullText
+            return
+        }
+
+        val updateText = {
+            val displayText = if (isDescriptionExpanded) {
+                "$fullText  Thu gọn"
+            } else {
+                "${fullText.substring(0, limit)}... Đọc thêm"
+            }
+
+            val spannableString = SpannableString(displayText)
+            val suffix = if (isDescriptionExpanded) "Thu gọn" else "Đọc thêm"
+            val startIndex = displayText.lastIndexOf(suffix)
+
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    isDescriptionExpanded = !isDescriptionExpanded
+                    setupExpandableDescription(textView, fullText)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                    ds.color = ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark)
+                    ds.isFakeBoldText = true
+                }
+            }
+
+            spannableString.setSpan(clickableSpan, startIndex, displayText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            textView.text = spannableString
+            textView.movementMethod = LinkMovementMethod.getInstance()
+        }
+        
+        updateText()
     }
 }
