@@ -2,6 +2,7 @@ package com.example.lightnovel
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
@@ -116,18 +118,36 @@ class Comment_Activity : AppCompatActivity() {
     }
 
     private fun showDeleteConfirmDialog(comment: Comment) {
-        AlertDialog.Builder(this)
-            .setTitle("Xóa bình luận")
-            .setMessage("Bạn có chắc chắn muốn xóa bình luận này?")
-            .setPositiveButton("Xóa") { _, _ ->
-                val result = db.deleteComment(comment.id)
-                if (result > 0) {
-                    loadComments()
-                    adapter.notifyDataSetChanged()
-                    Toast.makeText(this, "Đã xóa bình luận", Toast.LENGTH_SHORT).show()
-                }
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm_delete, null)
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+
+        val alertDialog = builder.create()
+        
+        // Làm cho background của dialog mặc định trở nên trong suốt để thấy bo góc của CardView
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDelete)
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirmDelete)
+        val tvMessage = dialogView.findViewById<TextView>(R.id.tvDialogMessage)
+
+        tvMessage.text = "Bạn có chắc chắn muốn xóa bình luận này không?"
+
+        btnCancel.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        btnConfirm.setOnClickListener {
+            val result = db.deleteComment(comment.id)
+            if (result > 0) {
+                loadComments()
+                adapter.notifyDataSetChanged()
+                Toast.makeText(this, "Đã xóa bình luận", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Hủy", null)
-            .show()
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 }

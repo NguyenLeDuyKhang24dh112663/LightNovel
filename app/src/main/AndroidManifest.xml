@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LightNovel">
         <activity
-            android:name=".ChaptersListActivity"
+            android:name=".AddEditActivity"
             android:exported="false" />
         <activity
             android:name=".AddEditChapterActivity"
@@ -27,19 +27,19 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".AddEditActivity"
+            android:name=".ChaptersListActivity"
             android:exported="false" />
         <activity
             android:name=".SigninActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminsTheLoaiActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".AdminsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AdminsTheLoaiActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

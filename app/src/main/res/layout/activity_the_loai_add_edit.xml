@@ -23,6 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lưu"
+        android:textSize="20dp"
+        android:backgroundTint="@color/Green_success"
         app:layout_constraintTop_toBottomOf="@id/etGenreName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

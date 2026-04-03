@@ -5,6 +5,6 @@
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:textColor="@color/BgThemeColor"
-    android:textSize="16sp"
+    android:textSize="20sp"
     android:fontFamily="@font/montserrat_medium"
     android:background="?attr/selectableItemBackground"/>

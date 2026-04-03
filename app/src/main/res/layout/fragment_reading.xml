@@ -15,18 +15,35 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/tvReadingNovelTitle"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F4A62A"
-            android:gravity="center"
-            android:padding="16dp"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="Danh sách chương"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:background="@color/BgThemeColor1">
+
+            <ImageButton
+                android:id="@+id/btnBackToDetail"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Quay lại"
+                android:src="@drawable/abc_ic_ab_back_material"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvReadingNovelTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/btnBackToDetail"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Danh sách chương"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChaptersList"
@@ -79,9 +96,10 @@
             android:orientation="horizontal"
             android:weightSum="5"
             android:gravity="center_vertical"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:background="#121212">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/ivBack"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
@@ -89,8 +107,9 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/go_back_ic"
-                android:contentDescription="@string/app_name"/>
+                android:src="@drawable/abc_ic_ab_back_material"
+                app:tint="@color/HintColor"
+                android:contentDescription="Quay lại danh sách"/>
 
             <Button
                 android:id="@+id/btnMoveToTop"
@@ -100,7 +119,7 @@
                 android:layout_weight="2"
                 android:layout_marginHorizontal="4dp"
                 android:text="Lên đầu"
-                android:backgroundTint="#2196F3"/>
+                android:backgroundTint="@color/Blue"/>
 
             <Button
                 android:id="@+id/btnMoveToBottom"
@@ -110,137 +129,8 @@
                 android:layout_weight="2"
                 android:layout_marginStart="4dp"
                 android:text="Xuống cuối"
-                android:backgroundTint="#4CAF50"/>
+                android:backgroundTint="@color/Green"/>
         </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    android:background="@color/myBgColor"-->
-<!--    tools:context=".ReadingFragment">-->
-
-<!--    &lt;!&ndash; Danh sách chương (Mặc định hiện) &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/layoutChapterList"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical"-->
-<!--        android:visibility="visible">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tvReadingNovelTitle"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="#F4A62A"-->
-<!--            android:gravity="center"-->
-<!--            android:padding="16dp"-->
-<!--            android:fontFamily="@font/montserrat_medium"-->
-<!--            android:text="Danh sách chương"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textStyle="bold" />-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rvChaptersList"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:padding="8dp" />-->
-<!--    </LinearLayout>-->
-
-<!--    &lt;!&ndash; Nội dung chương (Ẩn đi, hiện khi chọn chương) &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/layoutChapterContent"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical"-->
-<!--        android:visibility="gone">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tvCurrentChapterTitle"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="#F4A62A"-->
-<!--            android:gravity="center"-->
-<!--            android:padding="16dp"-->
-<!--            android:text="Nội dung"-->
-<!--            android:fontFamily="@font/montserrat_medium"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textStyle="bold" />-->
-
-<!--        <androidx.core.widget.NestedScrollView-->
-<!--            android:id="@+id/scrollViewContent"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvContent"-->
-<!--                android:fontFamily="@font/montserrat_medium"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:lineSpacingExtra="8dp"-->
-<!--                android:padding="16dp"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="16sp" />-->
-<!--        </androidx.core.widget.NestedScrollView>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:weightSum="5"-->
-<!--            android:padding="8dp">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/ivBack"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="16dp"-->
-<!--                android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--                android:padding="8dp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:srcCompat="@drawable/go_back_ic"-->
-<!--                android:layout_weight="1"-->
-<!--                android:contentDescription="@string/app_name"/>-->
-
-<!--&lt;!&ndash;            <Button&ndash;&gt;-->
-<!--&lt;!&ndash;                android:id="@+id/btnBackToList"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_width="0dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_weight="2"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:text="Quay lại"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:fontFamily="@font/montserrat_medium"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_marginEnd="4dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:backgroundTint="@color/LightRed"/>&ndash;&gt;-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnMoveToTop"-->
-<!--                android:fontFamily="@font/montserrat_medium"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="2"-->
-<!--                android:layout_marginHorizontal="4dp"-->
-<!--                android:text="Lên đầu"-->
-<!--                android:backgroundTint="#2196F3"/>-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnMoveToBottom"-->
-<!--                android:fontFamily="@font/montserrat_medium"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="2"-->
-<!--                android:layout_marginStart="4dp"-->
-<!--                android:text="Xuống cuối"-->
-<!--                android:backgroundTint="#4CAF50"/>-->
-<!--        </LinearLayout>-->
-<!--    </LinearLayout>-->
-
-<!--</RelativeLayout>-->
-

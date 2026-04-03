@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -53,7 +54,8 @@ class ReadingFragment : Fragment() {
         val tvNovelTitle = view.findViewById<TextView>(R.id.tvReadingNovelTitle)
         tvNovelTitle.text = "Chương của: $novelTitle"
 
-        val btnBack = view.findViewById<ImageView>(R.id.ivBack)
+        val btnBackToDetail = view.findViewById<ImageButton>(R.id.btnBackToDetail)
+        val btnBackToList = view.findViewById<ImageView>(R.id.ivBack)
         val btnTop = view.findViewById<Button>(R.id.btnMoveToTop)
         val btnBottom = view.findViewById<Button>(R.id.btnMoveToBottom)
 
@@ -75,7 +77,11 @@ class ReadingFragment : Fragment() {
         }
 
         // Sự kiện nút bấm
-        btnBack.setOnClickListener {
+        btnBackToDetail.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        btnBackToList.setOnClickListener {
             showChapterList()
         }
 

@@ -30,6 +30,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textSize="20sp"
                     android:textColor="#F4A62A"
                     android:textStyle="bold"
                     android:fontFamily="@font/montserrat_medium"
@@ -39,8 +40,9 @@
                     android:id="@+id/tvCmttime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:textColor="#888888"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="Ngày" />
             </LinearLayout>
@@ -50,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textSize="16sp"
                 android:textColor="#CCCCCC"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Nội dung" />

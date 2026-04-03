@@ -9,7 +9,7 @@
         android:id="@+id/toolbarDetail"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#F4A62A"
+        android:background="@color/BgThemeColor1"
         android:elevation="4dp"
         app:navigationIcon="@drawable/abc_ic_ab_back_material"
         app:navigationIconTint="@color/black"
@@ -17,8 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/black"
-        android:theme="@style/ThemeOverlay.AppCompat.Light"
-        android:title="Gấu Truyện" />
+        android:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <ScrollView
         android:layout_width="match_parent"
