@@ -70,6 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setupBanner(fullList: List<Truyen>) {
+        if (!isAdded) return
         viewPager = requireView().findViewById(R.id.viewPagerBanner)
         
         // Lấy ngẫu nhiên tối đa 5 truyện làm banner
@@ -82,6 +83,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         // Tự động cuộn mỗi 3 giây
         sliderRunnable = Runnable {
+            if (!isAdded) return@Runnable
             val nextItem = if (viewPager.currentItem == randomNovels.size - 1) 0 else viewPager.currentItem + 1
             viewPager.currentItem = nextItem
             sliderHandler.postDelayed(sliderRunnable, 3000)
@@ -117,7 +119,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun updateGenresAdapter(autoCompleteGenres: AutoCompleteTextView) {
         val genres = viewModel.getAllGenres()
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, genres)
+        // Sử dụng layout tùy chỉnh item_dropdown_genre để hiển thị font chữ Montserrat
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_genre, genres)
         autoCompleteGenres.setAdapter(adapter)
         
         val currentText = autoCompleteGenres.text.toString()
