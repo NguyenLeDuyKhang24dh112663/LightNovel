@@ -36,10 +36,10 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminsActivity"
+            android:name=".AdminsTheLoaiActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminsTheLoaiActivity"
+            android:name=".AdminsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

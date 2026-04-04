@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class BannerAdapter(private val list: List<Int>) :
-    RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
+class BannerAdapter(
+    private val list: List<Truyen>,
+    private val onItemClick: (Truyen) -> Unit
+) : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.imgBanner)
@@ -22,6 +24,8 @@ class BannerAdapter(private val list: List<Int>) :
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.image.setImageResource(list[position])
+        val truyen = list[position]
+        holder.image.setImageResource(truyen.imageRes)
+        holder.itemView.setOnClickListener { onItemClick(truyen) }
     }
 }

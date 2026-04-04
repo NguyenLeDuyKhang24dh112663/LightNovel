@@ -1,12 +1,15 @@
 package com.example.lightnovel
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +18,9 @@ import androidx.viewpager2.widget.ViewPager2
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var viewModel: TruyenViewModel
+    private lateinit var viewPager: ViewPager2
+    private val sliderHandler = Handler(Looper.getMainLooper())
+    private lateinit var sliderRunnable: Runnable
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +37,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.filterByGenre(selectedGenre)
         }
         
-        // Thêm click listener để đảm bảo dropdown hiện ra khi click vào
         autoCompleteGenres.setOnClickListener {
             autoCompleteGenres.showDropDown()
         }
@@ -42,35 +47,72 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel.products.observe(viewLifecycleOwner) { list ->
             recyclerView.adapter = TruyenAdapter(list) { truyen ->
-                viewModel.select(truyen)
-                val bundle = Bundle()
-                bundle.putInt("id", truyen.id)
-                bundle.putString("title", truyen.title)
-                bundle.putInt("image", truyen.imageRes)
-                bundle.putString("author", truyen.author)
-                bundle.putString("description", truyen.description)
+                navigateToDetail(truyen)
+            }
 
-                val detailFragment = NovelDetailFragment()
-                detailFragment.arguments = bundle
-
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.flSectionsLayout, detailFragment)
-                    .addToBackStack(null)
-                    .commit()
+            // ===== Banner ViewPager2 (Ngẫu nhiên 5 truyện) =====
+            if (list.isNotEmpty()) {
+                setupBanner(list)
             }
         }
 
-        // ===== Banner ViewPager2 =====
-        val viewPager = view.findViewById<ViewPager2>(R.id.viewPagerBanner)
+        // Nút điều hướng banner thủ công
+        view.findViewById<ImageButton>(R.id.btnBannerLeft).setOnClickListener {
+            val current = viewPager.currentItem
+            if (current > 0) viewPager.currentItem = current - 1
+        }
 
-        val bannerList = listOf(
-            R.drawable.banner1,
-            R.drawable.banner2,
-            R.drawable.banner3
-        )
+        view.findViewById<ImageButton>(R.id.btnBannerRight).setOnClickListener {
+            val current = viewPager.currentItem
+            val count = viewPager.adapter?.itemCount ?: 0
+            if (current < count - 1) viewPager.currentItem = current + 1
+        }
+    }
 
-        val bannerAdapter = BannerAdapter(bannerList)
+    private fun setupBanner(fullList: List<Truyen>) {
+        viewPager = requireView().findViewById(R.id.viewPagerBanner)
+        
+        // Lấy ngẫu nhiên tối đa 5 truyện làm banner
+        val randomNovels = fullList.shuffled().take(5)
+
+        val bannerAdapter = BannerAdapter(randomNovels) { truyen ->
+            navigateToDetail(truyen)
+        }
         viewPager.adapter = bannerAdapter
+
+        // Tự động cuộn mỗi 3 giây
+        sliderRunnable = Runnable {
+            val nextItem = if (viewPager.currentItem == randomNovels.size - 1) 0 else viewPager.currentItem + 1
+            viewPager.currentItem = nextItem
+            sliderHandler.postDelayed(sliderRunnable, 3000)
+        }
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                sliderHandler.removeCallbacks(sliderRunnable)
+                sliderHandler.postDelayed(sliderRunnable, 3000)
+            }
+        })
+    }
+
+    private fun navigateToDetail(truyen: Truyen) {
+        viewModel.select(truyen)
+        val bundle = Bundle().apply {
+            putInt("id", truyen.id)
+            putString("title", truyen.title)
+            putInt("image", truyen.imageRes)
+            putString("author", truyen.author)
+            putString("description", truyen.description)
+        }
+
+        val detailFragment = NovelDetailFragment()
+        detailFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.flSectionsLayout, detailFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun updateGenresAdapter(autoCompleteGenres: AutoCompleteTextView) {
@@ -78,8 +120,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, genres)
         autoCompleteGenres.setAdapter(adapter)
         
-        // Quan trọng: Sử dụng filter = false khi đặt text ban đầu để tránh việc 
-        // AutoCompleteTextView lọc mất các item khác trong danh sách dropdown.
         val currentText = autoCompleteGenres.text.toString()
         if (currentText.isNotEmpty()) {
             autoCompleteGenres.setText(currentText, false)
@@ -89,9 +129,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onResume() {
         super.onResume()
         viewModel.refreshFromDb()
-        // Cập nhật lại danh sách thể loại từ database khi quay lại màn hình này
         view?.findViewById<AutoCompleteTextView>(R.id.autoCompleteGenres)?.let {
             updateGenresAdapter(it)
+        }
+        if (::sliderRunnable.isInitialized) {
+            sliderHandler.postDelayed(sliderRunnable, 3000)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::sliderRunnable.isInitialized) {
+            sliderHandler.removeCallbacks(sliderRunnable)
         }
     }
 }
