@@ -11,6 +11,9 @@ class TruyenViewModel(application: Application) : AndroidViewModel(application) 
     private val _novels = MutableLiveData<List<Truyen>>()
     val products: LiveData<List<Truyen>> = _novels
 
+    private val _allNovels = MutableLiveData<List<Truyen>>()
+    val allNovels: LiveData<List<Truyen>> = _allNovels
+
     private val _selected = MutableLiveData<Truyen?>()
     val selected: LiveData<Truyen?> = _selected
 
@@ -25,13 +28,14 @@ class TruyenViewModel(application: Application) : AndroidViewModel(application) 
     fun refreshFromDb() {
         val username = sharedPref.getString("username", null)
         fullList = db.getAllNovels(username)
+        _allNovels.value = fullList
         _novels.value = fullList
     }
 
     fun filterByGenre(genreName: String) {
         val username = sharedPref.getString("username", null)
         if (genreName == "Tất cả") {
-            refreshFromDb()
+            _novels.value = fullList
         } else {
             val filtered = db.getNovelsByGenre(genreName, username)
             _novels.value = filtered
@@ -66,21 +70,28 @@ class TruyenViewModel(application: Application) : AndroidViewModel(application) 
         val username = sharedPref.getString("username", null)
         if (username == null) return
 
-        val currentList = _novels.value ?: return
-        val updatedList = currentList.map {
-            if (it.id == productId) {
-                val newFavoriteStatus = !it.isFavorite
-                db.setFavorite(username, productId, newFavoriteStatus)
-                val updatedNovel = it.copy(isFavorite = newFavoriteStatus)
-                updatedNovel
-            } else it
+        val updateListFunc = { list: List<Truyen> ->
+            list.map {
+                if (it.id == productId) {
+                    val newFavoriteStatus = !it.isFavorite
+                    // Note: This call to db.setFavorite happens multiple times if we're not careful, 
+                    // but here it's inside a map which is applied to different lists.
+                    // Better to do it once outside.
+                    it.copy(isFavorite = newFavoriteStatus)
+                } else it
+            }
         }
-        _novels.value = updatedList
+
+        // Perform DB update once
+        val currentNovel = fullList.find { it.id == productId }
+        currentNovel?.let {
+            db.setFavorite(username, productId, !it.isFavorite)
+        }
+
+        fullList = updateListFunc(fullList)
+        _allNovels.value = fullList
         
-        // Update fullList as well to keep state consistent after search clears
-        fullList = fullList.map {
-            if (it.id == productId) it.copy(isFavorite = !it.isFavorite) else it
-        }
+        _novels.value = _novels.value?.let { updateListFunc(it) }
 
         _selected.value = _selected.value?.let { sel ->
             if (sel.id == productId) sel.copy(isFavorite = !sel.isFavorite) else sel

@@ -87,6 +87,15 @@
                         android:text="Tác giả: ..."
                         android:textColor="#BDBDBD" />
 
+                    <TextView
+                        android:id="@+id/txtGenre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Thể loại: ..."
+                        android:textColor="#BDBDBD" />
+
                 </LinearLayout>
 
                 <ImageButton

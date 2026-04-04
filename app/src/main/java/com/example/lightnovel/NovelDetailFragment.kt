@@ -32,7 +32,9 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         val title = arguments?.getString("title")
         val image = arguments?.getInt("image")
         val description = arguments?.getString("description") ?: ""
+        val genre = arguments?.getString("genre")
         val author = arguments?.getString("author")
+
 
         val toolbar = view.findViewById<Toolbar>(R.id.toolbarDetail)
         toolbar.setNavigationOnClickListener {
@@ -43,6 +45,7 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
         val img = view.findViewById<ImageView>(R.id.imgDetail)
         val tvDescription = view.findViewById<TextView>(R.id.txtMoTa)
         val tvAuthor = view.findViewById<TextView>(R.id.txtTacGia)
+        val tvGenre = view.findViewById<TextView>(R.id.txtGenre)
         val btnFav = view.findViewById<ImageView>(R.id.btnFavorite)
         val btnViewChapters = view.findViewById<TextView>(R.id.btnViewChapters)
         val btnContinue = view.findViewById<TextView>(R.id.btnContinue)
@@ -51,6 +54,7 @@ class NovelDetailFragment : Fragment(R.layout.fragment_novel_detail) {
 
         tvTitle.text = title
         tvAuthor.text = "Tác giả: $author"
+        tvGenre.text = "Thể loại: $genre"
         
         setupExpandableDescription(tvDescription, description)
 

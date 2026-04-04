@@ -347,6 +347,17 @@ class databaseHelper(context: Context)
         return list
     }
 
+    fun getGenreNameById(id: Int): String {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT name FROM genres WHERE id = ?", arrayOf(id.toString()))
+        var name = ""
+        if (cursor.moveToFirst()) {
+            name = cursor.getString(0)
+        }
+        cursor.close()
+        return name
+    }
+
     // --- Novel & Genre Junction Operations ---
 
     fun setNovelGenres(novelId: Long, genreIds: List<Int>) {

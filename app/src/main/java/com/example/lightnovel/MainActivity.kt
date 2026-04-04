@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
@@ -42,10 +43,7 @@ class MainActivity : AppCompatActivity() {
         edtSearch = findViewById(R.id.edtSearch)
         tvLogo = findViewById(R.id.textView)
 
-        val favSecFragment = FavoriteSectionFragment()
-        val profSecFragment = ProfileSectionFragment()
         val homeFragment = HomeFragment()
-        val historyFragment = ReadHistoryFragment()
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, homeFragment).commit()
@@ -53,29 +51,38 @@ class MainActivity : AppCompatActivity() {
 
         ibSearch.setOnClickListener {
             if (edtSearch.visibility == View.GONE) {
+                // Hiện thanh tìm kiếm
                 tvLogo.visibility = View.GONE
                 edtSearch.visibility = View.VISIBLE
                 edtSearch.requestFocus()
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(edtSearch, InputMethodManager.SHOW_IMPLICIT)
+                showKeyboard()
             } else {
-                val query = edtSearch.text.toString()
-                viewModel.search(query)
-                hideKeyboard()
+                // Thực hiện tìm kiếm
+                val query = edtSearch.text.toString().trim()
+                if (query.isNotEmpty()) {
+                    performSearch(query)
+                }
             }
         }
 
-        edtSearch.addTextChangedListener {
-            viewModel.search(it.toString())
+        // Xử lý khi nhấn phím Enter/Search trên bàn phím
+        edtSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
+                val query = edtSearch.text.toString().trim()
+                if (query.isNotEmpty()) {
+                    performSearch(query)
+                }
+                true
+            } else false
         }
 
         btnFav.setOnClickListener {
-            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, favSecFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, FavoriteSectionFragment()).addToBackStack(null).commit()
             hideSearchUI()
         }
 
         btnProfile.setOnClickListener {
-            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, profSecFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, ProfileSectionFragment()).addToBackStack(null).commit()
             hideSearchUI()
         }
 
@@ -85,9 +92,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnHistory.setOnClickListener {
-            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, historyFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.flSectionsLayout, ReadHistoryFragment()).addToBackStack(null).commit()
             hideSearchUI()
         }
+    }
+
+    private fun performSearch(query: String) {
+        val searchFragment = SearchResultFragment()
+        val bundle = Bundle()
+        bundle.putString("query", query)
+        searchFragment.arguments = bundle
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flSectionsLayout, searchFragment)
+            .addToBackStack(null)
+            .commit()
+
+        hideKeyboard()
+    }
+
+    private fun showKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(edtSearch, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -112,6 +138,7 @@ class MainActivity : AppCompatActivity() {
     private fun hideSearchUI() {
         tvLogo.visibility = View.VISIBLE
         edtSearch.visibility = View.GONE
+        edtSearch.text.clear()
     }
 
     private fun hideKeyboard() {
