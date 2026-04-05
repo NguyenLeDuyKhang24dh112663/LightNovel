@@ -175,12 +175,18 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textColorHint="@color/HintColor"
                 app:boxStrokeColor="@color/BgThemeColor">
+<!--                app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"    -->
+
+
+            <!--                app:hintEnabled="false"-->
+<!--                app:boxStrokeWidth="0dp"-->
+<!--                app:boxStrokeWidthFocused="0dp"-->
+
 
                 <AutoCompleteTextView
                     android:id="@+id/editGender"
@@ -189,7 +195,11 @@
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Giới tính"
                     android:inputType="none"
-                    android:textColor="@color/BgThemeColor" />
+                    android:focusable="false"
+                    android:padding="15dp"
+                    android:textColor="@color/BgThemeColor"
+                    android:popupBackground="@color/BeigeBrown"
+                    app:dropDownBackgroundTint="@color/BeigeBrown" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

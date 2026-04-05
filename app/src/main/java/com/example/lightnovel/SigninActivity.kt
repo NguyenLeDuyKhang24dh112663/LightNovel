@@ -60,9 +60,9 @@ class SigninActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // Gender Dropdown
+        // Gender Dropdown - Sử dụng layout tùy chỉnh item_dropdown_genre
         val genders = arrayOf("Nam", "Nữ", "Khác")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, genders)
+        val adapter = ArrayAdapter(this, R.layout.item_dropdown_genre, genders)
         edtGender.setAdapter(adapter)
         edtGender.setOnClickListener {
             edtGender.showDropDown()

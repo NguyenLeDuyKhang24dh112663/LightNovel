@@ -47,7 +47,7 @@ class EditProfileFragment : Fragment() {
         val btnSave = view.findViewById<Button>(R.id.btnSave)
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
 
-        // Pre-fill data
+        // Nhập trước thông tin củ a tài khoản
         currentAccount?.let {
             editUsername.setText(it.username)
             editPassword.setText(it.password)
@@ -61,7 +61,7 @@ class EditProfileFragment : Fragment() {
             editGender.setText(it.gender, false)
         }
 
-        // Setup DoB picker
+        // Bảng chọn ngày cho DoB
         editDoB.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(requireContext(), { _, year, month, day ->
@@ -69,10 +69,14 @@ class EditProfileFragment : Fragment() {
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        // Setup Gender dropdown
+        // dropdown giới tính - Sử dụng layout tùy chỉnh item_dropdown_genre
         val genders = arrayOf("Nam", "Nữ", "Khác")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, genders)
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_genre, genders)
         editGender.setAdapter(adapter)
+        
+        editGender.setOnClickListener {
+            editGender.showDropDown()
+        }
 
         btnSave.setOnClickListener {
             val updatedAccount = currentAccount?.copy(
