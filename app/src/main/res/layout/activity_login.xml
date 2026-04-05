@@ -65,7 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:textColorHint="@color/HintColor"
-            app:boxStrokeColor="@color/BgThemeColor">
+            app:boxStrokeColor="@color/BgThemeColor"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtPassword"

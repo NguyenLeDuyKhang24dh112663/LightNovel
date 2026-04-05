@@ -125,7 +125,6 @@ class Comment_Activity : AppCompatActivity() {
 
         val alertDialog = builder.create()
         
-        // Làm cho background của dialog mặc định trở nên trong suốt để thấy bo góc của CardView
         alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDelete)

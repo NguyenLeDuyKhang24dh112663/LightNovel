@@ -37,6 +37,11 @@ class FavoriteAdapter (
         holder.tvAuthor.isSelected = true
 
         holder.btnRead.setOnClickListener {
+            // Ẩn thanh tìm kiếm nếu đang ở MainActivity
+            if (context is MainActivity) {
+                context.hideSearchUI()
+            }
+
             val bundle = Bundle()
             bundle.putInt("id", truyen.id)
             bundle.putString("title", truyen.title)

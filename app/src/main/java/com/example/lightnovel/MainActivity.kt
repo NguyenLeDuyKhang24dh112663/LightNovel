@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(event)
     }
 
-    private fun hideSearchUI() {
+    fun hideSearchUI() {
         tvLogo.visibility = View.VISIBLE
         edtSearch.visibility = View.GONE
         edtSearch.text.clear()

@@ -148,7 +148,7 @@ class databaseHelper(context: Context)
         }
     }
 
-    // --- Comment Operations ---
+    // các hàm về bình luận vào truyện
 
     fun insertComment(novelId: Int, username: String, content: String): Long {
         val db = writableDatabase
@@ -193,7 +193,7 @@ class databaseHelper(context: Context)
         return db.update("comments", values, "id=?", arrayOf(id.toString()))
     }
 
-    // --- Chapter Operations ---
+    // các hàm về chương của truyện
 
     fun insertChapter(novelId: Int, chapterNumber: Int, title: String, content: String): Long {
         val db = writableDatabase
@@ -251,7 +251,7 @@ class databaseHelper(context: Context)
         return content
     }
 
-    // --- History Operations ---
+    // các hàm về lịch sử đọc
 
     fun addToHistory(username: String, novelId: Int, chapterNumber: Int = 1) {
         val db = writableDatabase
@@ -302,7 +302,7 @@ class databaseHelper(context: Context)
         return list
     }
 
-    // --- Genre Operations ---
+    // các hàm về thể loại truyện
 
     fun insertGenre(name: String): Long {
         val db = writableDatabase
@@ -358,7 +358,7 @@ class databaseHelper(context: Context)
         return name
     }
 
-    // --- Novel & Genre Junction Operations ---
+    // giao nhau giữa thể loại và truyện
 
     fun setNovelGenres(novelId: Long, genreIds: List<Int>) {
         val db = writableDatabase
@@ -391,7 +391,7 @@ class databaseHelper(context: Context)
         return list
     }
 
-    // --- Novel Operations ---
+    // các hàm về truyện
 
     fun insertNovel(novel: Truyen, genreIds: List<Int>): Long {
         val db = writableDatabase
